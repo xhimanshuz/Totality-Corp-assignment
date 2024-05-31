@@ -10,6 +10,7 @@ This project implements a gRPC user service in Go for managing user details and 
 - Go 1.16 or later
 - Protocol Buffers compiler (`protoc`)
 - Docker
+- Postman (for testing)
 
 ## Setup
 
@@ -62,16 +63,99 @@ go run server.go
 - `GetUserDetails`
 - `GetUsersDetails`
 - `SearchUsers`
+- `AddUser`
 
 ## Configuration Details
 
 No specific configuration required.
 
-## Testing
+## Testing with Postman
 
-You can test the gRPC service using `grpcurl` or any other gRPC client.
+You can use Postman to interact with the gRPC service. Follow these steps:
+
+1. **Open Postman and Create a New gRPC Request:**
+   - Click on the `New` button.
+   - Select `Request`.
+   - Name your request (e.g., `AddUser`) and save it to a collection.
+
+2. **Select gRPC as the Protocol:**
+   - In the new request tab, select `gRPC` from the dropdown menu.
+
+3. **Enter the Server URL:**
+   - Enter the server URL, which is `localhost:50051` if your server is running locally.
+
+4. **Load the `.proto` File:**
+   - Click on the `+ Add Proto File` button.
+   - Select and upload your `user.proto` file.
+   - Postman will parse the `.proto` file and show the available services and methods.
+
+### Example Requests
+
+1. **AddUser Request:**
+   - Select the `UserService` service.
+   - Choose the `AddUser` method.
+   - Fill in the request data. For example:
+
+   ```json
+   {
+     "fname": "Himanshu",
+     "city": "Gurgaon",
+     "phone": 9058613131,
+     "height": 5.5,
+     "married": false
+   }
+   ```
+
+   - Click on the `Invoke` button to send the request.
+   - Postman will display the response from the gRPC server, including the assigned user ID.
+
+2. **GetUserDetails Request:**
+   - Select the `UserService` service.
+   - Choose the `GetUserDetails` method.
+   - Fill in the request data. For example:
+
+   ```json
+   {
+     "id": 1
+   }
+   ```
+
+   - Click on the `Invoke` button to send the request.
+   - Postman will display the response with the user details.
+
+3. **GetUsersDetails Request:**
+   - Select the `UserService` service.
+   - Choose the `GetUsersDetails` method.
+   - Fill in the request data. For example:
+
+   ```json
+   {
+     "ids": [1, 2]
+   }
+   ```
+
+   - Click on the `Invoke` button to send the request.
+   - Postman will display the response with the details of the specified users.
+
+4. **SearchUsers Request:**
+   - Select the `UserService` service.
+   - Choose the `SearchUsers` method.
+   - Fill in the request data. For example:
+
+   ```json
+   {
+     "city": "Gurgaon",
+     "phone": 9058613131,
+     "married": false
+   }
+   ```
+
+   - Click on the `Invoke` button to send the request.
+   - Postman will display the response with the users matching the search criteria.
 
 ### Example `grpcurl` Commands
+
+If you prefer to use `grpcurl`:
 
 1. **Get User Details:**
 
@@ -82,9 +166,21 @@ You can test the gRPC service using `grpcurl` or any other gRPC client.
 2. **Search Users:**
 
    ```sh
-   grpcurl -plaintext -d '{"city": "LA"}' localhost:50051 user.UserService/SearchUsers
+   grpcurl -plaintext -d '{"city": "Gurgaon"}' localhost:50051 user.UserService/SearchUsers
+   ```
+
+3. **Add User:**
+
+   ```sh
+   grpcurl -plaintext -d '{
+     "fname": "Himanshu",
+     "city": "Gurgaon",
+     "phone": 9058613131,
+     "height": 5.5,
+     "married": false
+   }' localhost:50051 user.UserService/AddUser
    ```
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. 

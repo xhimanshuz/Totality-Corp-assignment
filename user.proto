@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 
 package user;
@@ -9,6 +8,7 @@ service UserService {
     rpc GetUserDetails (UserIDRequest) returns (UserDetailsResponse);
     rpc GetUsersDetails (UserIDsRequest) returns (UsersDetailsResponse);
     rpc SearchUsers (SearchRequest) returns (UsersDetailsResponse);
+    rpc AddUser (AddUserRequest) returns (AddUserResponse);
 }
 
 message UserIDRequest {
@@ -40,4 +40,16 @@ message UserDetailsResponse {
 
 message UsersDetailsResponse {
     repeated User users = 1;
+}
+
+message AddUserRequest {
+    string fname = 1;
+    string city = 2;
+    int64 phone = 3;
+    float height = 4;
+    bool married = 5;
+}
+
+message AddUserResponse {
+    User user = 1;
 }
